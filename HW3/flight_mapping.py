@@ -26,8 +26,7 @@ def extract_data():
     # Find Mutched IATA and Area(Europe) from Airports DF and store cordinates
     post_crdn = []
     for iata in post_IATA:
-        tmp = df_airports[df_airports['IATA'].str.contains(
-            iata, regex=False) & df_airports['DZ'].str.contains('Europe', regex=False)]
+        tmp = df_airports[df_airports['IATA'].str.contains(iata, regex=False)]
         if len(tmp) == 0:
             continue
         crdn = []
@@ -38,8 +37,7 @@ def extract_data():
 
     curr_crdn = []
     for iata in curr_IATA:
-        tmp = df_airports[df_airports['IATA'].str.contains(
-            iata, regex=False) & df_airports['DZ'].str.contains('Europe', regex=False)]
+        tmp = df_airports[df_airports['IATA'].str.contains(iata, regex=False)]
         if len(tmp) == 0:
             continue
         crdn = []
@@ -64,7 +62,7 @@ def plot_data(post_crdn, curr_crdn):
 
     proj = ccrs.Miller()
     ax = plt.axes(projection=proj)
-    ax.set_extent([-13, 45, 30, 70])
+    ax.set_extent([-25, 45, 22, 70])
     ax.stock_img()
     ax.add_feature(cf.COASTLINE, lw=2)
     ax.add_feature(cf.BORDERS)
@@ -74,7 +72,7 @@ def plot_data(post_crdn, curr_crdn):
         ax.plot([tll_crdn[1], crdn[1]], [tll_crdn[2], crdn[2]],
                 color='blue', linewidth=2, marker='o',
                 transform=ccrs.Geodetic(),)
-        plt.text(crdn[1], crdn[2] - 0.5, crdn[0],
+        plt.text(crdn[1] - 0.3, crdn[2] - 1.2, crdn[0],
                  horizontalalignment='right',
                  transform=ccrs.Geodetic(),)
 
@@ -83,7 +81,7 @@ def plot_data(post_crdn, curr_crdn):
         ax.plot([tll_crdn[1], crdn[1]], [tll_crdn[2], crdn[2]],
                 color='red', linewidth=2, marker='o',
                 transform=ccrs.Geodetic(),)
-        plt.text(crdn[1], crdn[2] - 0.5, crdn[0],
+        plt.text(crdn[1] - 0.3, crdn[2] - 1.2, crdn[0],
                  horizontalalignment='right',
                  transform=ccrs.Geodetic())
 
@@ -96,11 +94,12 @@ def plot_data(post_crdn, curr_crdn):
         loc=4,
         fontsize='small',
         fancybox=True)
-    plt.title("Flights from Tallinn: Post Covid19 and Current")
+    plt.title("Flights from Tallinn: Post Covid19 and Current\n Author's name: Keisuke Konno")
     # Make figure larger
     plt.gcf().set_size_inches(20, 10)
     # Save figure as PNG
     plt.savefig("FlightMap.png")
+    plt.show()
 
 
 def main():
